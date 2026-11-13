@@ -62,7 +62,8 @@ export function Cloud({ tint = KIND_TINT.cloud, active = false }: SpriteProps) {
         style={{ fill: tint, fillOpacity: 0.3 }}
       />
       <path
-        d={`M-22 ${top}L-13 ${CENTRE_Y + 20}H13L22 ${top}Z`}
+        // The beam starts inside the cloud (drawn underneath it), so it always meets the cloud's underside.
+        d={`M-22 ${top}L-12 ${CENTRE_Y + 4}H12L22 ${top}Z`}
         style={{ fill: tint, fillOpacity: active ? 0.2 : 0.11 }}
       />
       {PUFFS.map(([x, y, r]) => (
