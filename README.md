@@ -75,6 +75,10 @@ URL hash, so the folder can be served from any static host and under any sub-pat
 Pages project sites (`https://<user>.github.io/<repo>/`). Publish the contents of `dist/`; no server
 configuration or rewrite rules are needed.
 
+This repository deploys itself: `.github/workflows/pages.yml` runs `pnpm check` on every push to
+`main` and publishes `dist/` to GitHub Pages. It needs Pages set to "GitHub Actions" once, under
+Settings → Pages → Build and deployment → Source.
+
 ## Structure
 
 ```
