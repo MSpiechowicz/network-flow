@@ -1,0 +1,170 @@
+.wrap {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  background: var(--panel);
+}
+
+.scroller {
+  /* Positioned, so the visually hidden labels inside the table are clipped with it. Otherwise
+     they sit in the page's own scroll area and give the page a second horizontal scrollbar. */
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font: 12px var(--font-mono);
+}
+
+.table th {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-base);
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--faint);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.table tbody th {
+  position: static;
+  padding: 0 10px;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.table td.info {
+  color: var(--text);
+  white-space: normal;
+  min-width: 14em;
+}
+
+.row[data-current='true'] td,
+.row[data-current='true'] th {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.row[data-selected='true'] td,
+.row[data-selected='true'] th {
+  background: var(--panel-3);
+  box-shadow:
+    inset 0 1px 0 var(--line-2),
+    inset 0 -1px 0 var(--line-2);
+}
+
+.row[data-selected='true'] .expandCell {
+  box-shadow:
+    inset 3px 0 0 var(--accent),
+    inset 0 1px 0 var(--line-2),
+    inset 0 -1px 0 var(--line-2);
+}
+
+.row:hover td,
+.row:hover th {
+  background: var(--panel-3);
+  cursor: pointer;
+}
+
+.expandCell {
+  width: 28px;
+  padding-right: 0 !important;
+}
+
+.expand {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--faint);
+}
+
+.expand:hover {
+  background: var(--line-2);
+  color: var(--text);
+}
+
+.expand > svg {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.expand[aria-expanded='true'] > svg {
+  transform: rotate(90deg);
+}
+
+.number {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--chip);
+  color: var(--bg);
+  font: 700 10.5px var(--font-mono);
+}
+
+.time,
+.length {
+  font-variant-numeric: tabular-nums;
+}
+
+.table th.length,
+.table td.length {
+  text-align: right;
+}
+
+.lock {
+  display: inline-flex;
+  margin-right: 6px;
+  color: var(--warn);
+  vertical-align: -2px;
+}
+
+.outcome {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 0 6px;
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-sm);
+  color: var(--danger);
+  font-size: 10.5px;
+  text-transform: uppercase;
+}
+
+.detailsRow td {
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg);
+  white-space: normal;
+}
+
+.empty {
+  padding: var(--space-4) !important;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  white-space: normal !important;
+}

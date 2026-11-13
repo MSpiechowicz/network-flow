@@ -1,0 +1,311 @@
+.bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  min-width: 0;
+  padding: var(--space-2) var(--space-4);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.transport,
+.options {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.options {
+  flex-wrap: wrap;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--line-2);
+  border-radius: 9px;
+  background: var(--panel-2);
+  font-size: var(--text-md);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.button:hover {
+  border-color: var(--accent);
+}
+
+.primary {
+  gap: 6px;
+  min-width: 96px;
+  /* A touch less on the icon side: the glyph carries its own white space. */
+  padding: 0 16px 0 13px;
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+
+/* Same optical centring as the protocol chips: trim the label to its capital height. */
+.primaryLabel {
+  display: inline-block;
+  line-height: 1;
+}
+
+@supports (text-box: trim-both cap alphabetic) {
+  .primaryLabel {
+    text-box: trim-both cap alphabetic;
+  }
+}
+
+.primary:hover {
+  background: color-mix(in srgb, var(--accent) 88%, white);
+}
+
+/* Scrubber */
+.scrubber {
+  display: flex;
+  flex: 1 1 220px;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.track {
+  --thumb: 18px;
+
+  position: relative;
+  flex: 1;
+  min-width: 80px;
+  height: 24px;
+}
+
+.range {
+  --progress: 0;
+
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+.range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(
+    to right,
+    var(--accent) calc(var(--thumb) / 2 + (100% - var(--thumb)) * var(--progress)),
+    var(--line-2) 0
+  );
+}
+
+.range::-moz-range-track {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--line-2);
+}
+
+.range::-moz-range-progress {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+}
+
+.range::-webkit-slider-thumb {
+  width: var(--thumb);
+  height: var(--thumb);
+  margin-top: -6px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  appearance: none;
+}
+
+.range::-moz-range-thumb {
+  box-sizing: border-box;
+  width: var(--thumb);
+  height: var(--thumb);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.knob {
+  --progress: 0;
+
+  position: absolute;
+  top: 50%;
+  left: calc(var(--thumb) / 2 + (100% - var(--thumb)) * var(--progress));
+  width: var(--thumb);
+  height: var(--thumb);
+  margin: calc(var(--thumb) / -2) 0 0 calc(var(--thumb) / -2);
+  border: 3px solid var(--panel);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 1.5px var(--accent);
+  pointer-events: none;
+}
+
+.range:focus-visible + .ticks + .knob {
+  box-shadow:
+    0 0 0 1.5px var(--accent),
+    0 0 0 4px color-mix(in srgb, var(--focus) 45%, transparent);
+}
+
+.ticks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.tick {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--thumb) / 2 + (100% - var(--thumb)) * var(--at));
+  /* A notch in the track at every step boundary, so the track reads as one segment per step. */
+  width: 2px;
+  height: 6px;
+  margin: -3px 0 0 -1px;
+  background: var(--panel);
+}
+
+.clock {
+  flex: none;
+  min-width: 9.5em;
+  color: var(--muted);
+  font: 500 var(--text-sm) var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* Speed */
+.speed {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.speedLabel {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.select {
+  height: 34px;
+  min-width: 76px;
+  padding: 0 32px 0 12px;
+  border: 1px solid var(--line-2);
+  border-radius: 9px;
+  appearance: none;
+  background-color: var(--panel-2);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%238b93a7' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 11px center;
+  color: var(--text);
+  font: 600 var(--text-sm) var(--font-mono);
+  line-height: 32px;
+  cursor: pointer;
+}
+
+.select:hover {
+  border-color: var(--accent);
+}
+
+/* Toggle pills */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--line-2);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--muted);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+
+.toggle:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.toggle[aria-pressed='true'] {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line-2));
+  color: var(--text);
+}
+
+.toggleDot {
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--faint);
+  border-radius: 50%;
+}
+
+.toggle[aria-pressed='true'] .toggleDot {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+/* Phones: transport, speed and help on one row; the timeline on its own row; toggles below. */
+@media (max-width: 639px) {
+  .bar {
+    gap: var(--space-2);
+    padding: var(--space-3);
+  }
+
+  .transport,
+  .options {
+    display: contents;
+  }
+
+  .speed {
+    order: 1;
+    margin-left: auto;
+  }
+
+  .speedLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .help {
+    order: 2;
+  }
+
+  .scrubber {
+    order: 3;
+    flex: 1 0 100%;
+    padding: var(--space-1) 2px;
+  }
+
+  .clock {
+    min-width: 0;
+  }
+
+  .toggle {
+    order: 4;
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
+  .primary {
+    min-width: 84px;
+  }
+}

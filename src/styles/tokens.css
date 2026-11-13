@@ -1,0 +1,175 @@
+/*
+ * Design tokens: the single source of colour, spacing, radius, layering, motion and type.
+ * Dark theme only. Import once, from `main.tsx`, before any component CSS.
+ *
+ * Contrast (WCAG 2.x, measured against --bg #0b0d12 and --panel #11141c):
+ *   --text, --muted, --faint        text tokens, all at least 4.5:1
+ *   --dim                            3:1 non-text use only (hairline glyphs, disabled), never body copy
+ *   --proto-*, --kind-*, --zone-*    at least 3:1, for graphics and large/bold labels
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* Surfaces */
+  --bg: #0b0d12;
+  --panel: #11141c;
+  --panel-2: #171b26;
+  --panel-3: #1b2230;
+  --line: #242a39;
+  --line-2: #323a4e;
+
+  /* Text */
+  --text: #e7eaf3;
+  --muted: #8b93a7;
+  --faint: #7c859b;
+  --dim: #5d667b;
+
+  /* Brand and state */
+  --accent: #c8f169;
+  --accent-ink: #10140a;
+  --focus: #c8f169;
+  --ok: #8fe388;
+  --warn: #f6b94c;
+  --danger: #ff6b6b;
+  --info: #6f9cff;
+
+  /* Protocol colours. Mirror `PROTOCOLS[id].color` in src/protocols/registry.ts. */
+  --proto-ethernet: #9aa5b8;
+  --proto-ipv4: #6f9cff;
+  --proto-icmp: #ff6b6b;
+  --proto-tcp: #5fd4e8;
+  --proto-udp: #f27fd2;
+  --proto-dns: #b79cff;
+  --proto-dhcp: #d8e15c;
+  --proto-ntp: #3fd9a0;
+  --proto-http: #8fe388;
+  --proto-tls: #f6b94c;
+  --proto-smtp: #ff9a62;
+  --proto-pop3: #e3c28f;
+  --proto-imap: #ff8fb1;
+
+  /* Device tints, one per node kind. Mirror `KIND_TINT` in src/ui/scene/devices/tints.ts. */
+  --kind-laptop: #c8f169;
+  --kind-phone: #c8f169;
+  --kind-router: #5fd4e8;
+  --kind-switch: #7b8cff;
+  --kind-firewall: #ff7a5c;
+  --kind-cloud: #7fc4ff;
+  --kind-dns-resolver: #38bdf8;
+  --kind-dns-root: #e6ebf5;
+  --kind-dns-tld: #5d68ff;
+  --kind-dns-authoritative: #b79cff;
+  --kind-cdn-edge: #3fd9a0;
+  --kind-origin-server: #f6b94c;
+  --kind-api-server: #ff7f73;
+  --kind-dhcp-server: #b4e33d;
+  --kind-mail-server: #ff9a62;
+  --kind-observer: #ff5c7a;
+  --kind-server: #8b98b5;
+
+  /* Device faces: matte body, lit top. Tint variants mix --face-tint-mix of the kind tint in. */
+  --face-top: #3d465d;
+  --face-top-lit: #4d5878;
+  --face-left: #2a3144;
+  --face-right: #1d2231;
+  --face-stroke: #5c6784;
+  --face-edge: #8a96b8;
+  --face-ink: #141824;
+  --face-bezel: #232a3b;
+  --face-tint-mix: 12%;
+  --face-tint-mix-lit: 30%;
+
+  /* Scene canvas */
+  --scene-grid: #1a1f2c;
+  --scene-link: #2f3850;
+  --scene-link-active: #5c6784;
+  --scene-shadow: #000000;
+
+  /* Zone plates. Each tone has a hue, a plate fill, an outline and a legible label colour. */
+  --zone-lan: #7ee0a8;
+  --zone-isp: #6f9cff;
+  --zone-internet: #5fd4e8;
+  --zone-datacenter: #f6b94c;
+  --zone-remote: #ff8fb1;
+
+  --zone-lan-fill: color-mix(in srgb, var(--zone-lan) 7%, var(--panel));
+  --zone-isp-fill: color-mix(in srgb, var(--zone-isp) 7%, var(--panel));
+  --zone-internet-fill: color-mix(in srgb, var(--zone-internet) 7%, var(--panel));
+  --zone-datacenter-fill: color-mix(in srgb, var(--zone-datacenter) 7%, var(--panel));
+  --zone-remote-fill: color-mix(in srgb, var(--zone-remote) 7%, var(--panel));
+
+  --zone-lan-line: color-mix(in srgb, var(--zone-lan) 38%, var(--line));
+  --zone-isp-line: color-mix(in srgb, var(--zone-isp) 38%, var(--line));
+  --zone-internet-line: color-mix(in srgb, var(--zone-internet) 38%, var(--line));
+  --zone-datacenter-line: color-mix(in srgb, var(--zone-datacenter) 38%, var(--line));
+  --zone-remote-line: color-mix(in srgb, var(--zone-remote) 38%, var(--line));
+
+  --zone-lan-label: color-mix(in srgb, var(--zone-lan) 80%, var(--muted));
+  --zone-isp-label: color-mix(in srgb, var(--zone-isp) 80%, var(--muted));
+  --zone-internet-label: color-mix(in srgb, var(--zone-internet) 80%, var(--muted));
+  --zone-datacenter-label: color-mix(in srgb, var(--zone-datacenter) 80%, var(--muted));
+  --zone-remote-label: color-mix(in srgb, var(--zone-remote) 80%, var(--muted));
+
+  /* Spacing (4px base) */
+  --space-0: 2px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 999px;
+
+  /* Layering */
+  --z-base: 0;
+  --z-scene-overlay: 10;
+  --z-sticky: 20;
+  --z-panel: 30;
+  --z-drawer: 40;
+  --z-popover: 50;
+  --z-modal: 60;
+  --z-toast: 70;
+
+  /* Motion */
+  --dur-instant: 80ms;
+  --dur-fast: 140ms;
+  --dur-base: 220ms;
+  --dur-slow: 380ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Type: system stacks only, no web fonts */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:
+    ui-monospace, 'JetBrains Mono', 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono',
+    monospace;
+
+  --text-xs: 11px;
+  --text-sm: 12.5px;
+  --text-md: 14px;
+  --text-lg: 16px;
+  --text-xl: 21px;
+  --text-2xl: 28px;
+
+  --shadow-panel: 0 8px 28px rgb(0 0 0 / 45%);
+  --shadow-popover: 0 12px 36px rgb(0 0 0 / 55%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-instant: 0.01ms;
+    --dur-fast: 0.01ms;
+    --dur-base: 0.01ms;
+    --dur-slow: 0.01ms;
+  }
+}

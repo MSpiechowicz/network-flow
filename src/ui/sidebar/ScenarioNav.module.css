@@ -1,0 +1,328 @@
+/*
+ * Three presentations of one element (breakpoints match App.module.css):
+ *   >= 1280px      always-open column (the grid gives it 280px)
+ *   1024-1279px    64px rail; `data-open` widens it to an overlay on top of the scene
+ *   < 1024px       off-canvas drawer; `data-open` slides it in
+ */
+.nav {
+  position: relative;
+  z-index: var(--z-drawer);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  border-right: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.top {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  height: 52px;
+  padding: 0 var(--space-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.topTitle {
+  display: none;
+  color: var(--muted);
+  font: 600 var(--text-xs) var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.toggle {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 34px;
+  border: 1px solid var(--line-2);
+  border-radius: 9px;
+  background: var(--panel-2);
+}
+
+.toggle:hover {
+  border-color: var(--accent);
+}
+
+.rail {
+  display: none;
+}
+
+.monogram {
+  width: 100%;
+  padding: var(--space-3) 0;
+  border: 0;
+  border-left: 3px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font: 600 var(--text-xs) var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.monogram:hover {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.monogram[aria-current='true'] {
+  border-left-color: var(--accent);
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.monogram:focus-visible {
+  outline-offset: -2px;
+}
+
+.full {
+  flex: 1;
+  min-height: 0;
+  padding: var(--space-3) 10px;
+  overflow: auto;
+}
+
+.category {
+  margin: 14px var(--space-2) 6px;
+  color: var(--faint);
+  font: 600 10.5px var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+section:first-child > .category {
+  margin-top: var(--space-1);
+}
+
+.scenario {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  text-align: left;
+}
+
+.scenario small {
+  color: var(--faint);
+  font: var(--text-xs) var(--font-mono);
+}
+
+.scenario:hover {
+  background: var(--panel-2);
+}
+
+.scenario[aria-expanded='true'] {
+  background: var(--panel-2);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+
+.scenario[data-loaded='true'] .scenarioTitle {
+  font-weight: 650;
+}
+
+.steps {
+  margin: 12px 0 14px;
+  padding: 0 2px;
+}
+
+/* Each phase is a titled section; its steps hang on a timeline. */
+.group + .group {
+  margin-top: 16px;
+}
+
+.phase {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 var(--space-2) 6px;
+  color: var(--text);
+  font: 700 10.5px var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.phase::before {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--accent);
+  content: '';
+}
+
+.phase::after {
+  flex: 1;
+  height: 1px;
+  background: var(--line-2);
+  content: '';
+}
+
+.step {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 6px var(--space-2);
+  border-radius: var(--radius-md);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
+  text-decoration: none;
+}
+
+/* Timeline: a line through the step numbers, cut at the first and last step of a section. */
+.step::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--space-2) + 10.5px);
+  width: 1px;
+  background: var(--line-2);
+  content: '';
+}
+
+li:first-child > .step::before {
+  top: 16px;
+}
+
+li:last-child > .step::before {
+  bottom: calc(100% - 16px);
+}
+
+li:only-child > .step::before {
+  display: none;
+}
+
+.step:hover {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.num {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--line-2);
+  border-radius: 50%;
+  background: var(--panel);
+  color: var(--faint);
+  font: 600 10.5px var(--font-mono);
+  font-style: normal;
+}
+
+.step > span {
+  padding-top: 2px;
+}
+
+.step[data-state='done'] {
+  color: var(--text);
+}
+
+.step[data-state='done'] .num {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line-2));
+  background: color-mix(in srgb, var(--accent) 16%, var(--panel));
+  color: var(--accent);
+}
+
+.step[data-state='current'] {
+  background: var(--panel-3);
+  box-shadow: inset 2px 0 0 var(--accent);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.step[data-state='current'] .num {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Rail */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .nav {
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: var(--z-drawer);
+    width: 64px;
+    transition: width var(--dur-base) var(--ease-out);
+  }
+
+  .top {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .rail {
+    display: block;
+    flex: 1;
+    overflow: auto;
+  }
+
+  .full {
+    display: none;
+  }
+
+  .nav[data-open='true'] {
+    width: 280px;
+    box-shadow: var(--shadow-panel);
+  }
+
+  .nav[data-open='true'] .top {
+    justify-content: flex-start;
+    padding: 0 var(--space-3);
+  }
+
+  .nav[data-open='true'] .topTitle {
+    display: inline;
+  }
+
+  .nav[data-open='true'] .rail {
+    display: none;
+  }
+
+  .nav[data-open='true'] .full {
+    display: block;
+  }
+}
+
+/* Drawer */
+@media (max-width: 1023px) {
+  .nav {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: var(--z-drawer);
+    width: min(320px, 88vw);
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      visibility 0s linear var(--dur-base);
+  }
+
+  .nav[data-open='true'] {
+    visibility: visible;
+    transform: none;
+    box-shadow: var(--shadow-panel);
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      visibility 0s;
+  }
+
+  .top {
+    display: flex;
+  }
+
+  .topTitle {
+    display: inline;
+  }
+}

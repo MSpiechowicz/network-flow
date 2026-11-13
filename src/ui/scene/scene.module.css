@@ -1,0 +1,457 @@
+/*
+ * Network scene. Colours come from tokens.css; per-element hues arrive as custom properties:
+ * `--tint` (device kind), `--hue` (protocol), and `--z-*` (zone tone).
+ * Everything that animates is switched off under `[data-motion='reduced']`.
+ */
+
+.root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  font-family: var(--font-sans);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  font-family: var(--font-sans);
+  pointer-events: none;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ------------------------------------------------------------------ floor */
+
+.grid {
+  fill: none;
+  stroke: var(--scene-grid);
+  stroke-width: 1;
+}
+
+.toneLan {
+  --z-hue: var(--zone-lan);
+  --z-fill: var(--zone-lan-fill);
+  --z-line: var(--zone-lan-line);
+  --z-label: var(--zone-lan-label);
+}
+
+.toneIsp {
+  --z-hue: var(--zone-isp);
+  --z-fill: var(--zone-isp-fill);
+  --z-line: var(--zone-isp-line);
+  --z-label: var(--zone-isp-label);
+}
+
+.toneInternet {
+  --z-hue: var(--zone-internet);
+  --z-fill: var(--zone-internet-fill);
+  --z-line: var(--zone-internet-line);
+  --z-label: var(--zone-internet-label);
+}
+
+.toneDatacenter {
+  --z-hue: var(--zone-datacenter);
+  --z-fill: var(--zone-datacenter-fill);
+  --z-line: var(--zone-datacenter-line);
+  --z-label: var(--zone-datacenter-label);
+}
+
+.toneRemote {
+  --z-hue: var(--zone-remote);
+  --z-fill: var(--zone-remote-fill);
+  --z-line: var(--zone-remote-line);
+  --z-label: var(--zone-remote-label);
+}
+
+.plateSide {
+  fill: color-mix(in srgb, var(--z-hue) 9%, var(--bg));
+  stroke: var(--z-line);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.plate {
+  fill: var(--z-fill);
+  stroke: var(--z-line);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.plateInset {
+  fill: none;
+  stroke: var(--z-line);
+  stroke-opacity: 0.4;
+  stroke-width: 1;
+  stroke-dasharray: 2 7;
+  stroke-linecap: round;
+}
+
+.zoneLabel {
+  fill: var(--z-label);
+  font: 600 10.5px var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  paint-order: stroke;
+  stroke: var(--z-fill);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.zoneLabelBack {
+  fill: var(--z-fill);
+  stroke: var(--z-line);
+  stroke-width: 1;
+}
+
+/* ------------------------------------------------------------------ links */
+
+.bed {
+  fill: none;
+  stroke: var(--panel-2);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.bed[data-state='active'] {
+  stroke: color-mix(in srgb, var(--hue) 17%, var(--panel-2));
+}
+
+.bed[data-state='route'] {
+  stroke: color-mix(in srgb, var(--hue) 8%, var(--panel-2));
+}
+
+.link {
+  fill: none;
+  stroke: var(--scene-link-active);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.link[data-state='route'] {
+  stroke: var(--hue);
+  stroke-opacity: 0.5;
+  stroke-width: 2.2;
+}
+
+.link[data-state='active'] {
+  stroke: var(--hue);
+  stroke-width: 3;
+  stroke-dasharray: 10 8;
+  animation: flowForward 0.55s linear infinite;
+}
+
+.link[data-state='active'][data-direction='reverse'] {
+  animation-name: flowReverse;
+}
+
+@keyframes flowForward {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+
+@keyframes flowReverse {
+  to {
+    stroke-dashoffset: 18;
+  }
+}
+
+.linkLabel {
+  fill: var(--muted);
+  font: 10px var(--font-mono);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------ nodes */
+
+.ring {
+  fill: color-mix(in srgb, var(--tint) 10%, transparent);
+  stroke: var(--tint);
+  stroke-width: 1.6;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+  transform-box: fill-box;
+  transform-origin: center;
+  pointer-events: none;
+}
+
+.node[data-state='active'] .ring {
+  opacity: 0.95;
+  animation: ringPulse 1.3s ease-in-out infinite;
+}
+
+.node[data-state='focus'] .ring {
+  opacity: 0.55;
+  stroke-width: 1.4;
+  stroke-dasharray: 5 6;
+}
+
+@keyframes ringPulse {
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+.name {
+  fill: var(--text);
+  font: 600 13px var(--font-sans);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-opacity: 0.85;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.sub {
+  fill: var(--muted);
+  font: 11px var(--font-mono);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-opacity: 0.85;
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+/* ---------------------------------------------------------------- actions */
+
+.action {
+  pointer-events: none;
+}
+
+.pulse {
+  fill: none;
+  stroke: var(--tint);
+  stroke-width: 2;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse 1.2s ease-out infinite;
+}
+
+.actionChip {
+  animation: chipIn var(--dur-base) var(--ease-out) both;
+}
+
+.actionBody {
+  fill: var(--panel-2);
+  stroke: var(--tint);
+  stroke-width: 1.3;
+}
+
+.actionPointer {
+  fill: var(--tint);
+}
+
+.actionIcon {
+  fill: none;
+  stroke: var(--tint);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.actionText {
+  fill: var(--text);
+  font: 600 11.5px var(--font-sans);
+  text-anchor: start;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(0.55);
+    opacity: 0.9;
+  }
+
+  to {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+@keyframes chipIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* ---------------------------------------------------------------- packets */
+
+.packet {
+  cursor: pointer;
+  outline: none;
+  pointer-events: auto;
+}
+
+.packet:focus-visible .focusRing {
+  opacity: 1;
+}
+
+.hit {
+  fill: transparent;
+}
+
+.noEvents {
+  pointer-events: none;
+}
+
+.focusRing {
+  fill: none;
+  stroke: var(--focus);
+  stroke-width: 2;
+  opacity: 0;
+}
+
+.stem {
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.chipText {
+  fill: var(--bg);
+  font: 700 11.5px var(--font-mono);
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.chipLock {
+  fill: none;
+  stroke: var(--bg);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.chipLockBody {
+  fill: var(--bg);
+}
+
+.chipFaded {
+  opacity: 0.6;
+}
+
+.selected {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.badgeBack {
+  fill: var(--panel);
+  stroke: var(--danger);
+  stroke-width: 2;
+}
+
+.badgeGlyph {
+  fill: none;
+  stroke: var(--danger);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.badge {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: badgeIn var(--dur-base) var(--ease-out) both;
+}
+
+.lostHalo {
+  fill: var(--danger);
+  fill-opacity: 0.18;
+  stroke: var(--danger);
+  stroke-opacity: 0.6;
+  stroke-width: 1.2;
+}
+
+.burst {
+  fill: none;
+  stroke: var(--danger);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: burst 0.6s ease-out both;
+}
+
+@keyframes badgeIn {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+
+@keyframes burst {
+  from {
+    transform: scale(0.3);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* ---------------------------------------------------------- reduced motion */
+
+.svg[data-motion='reduced'] .link[data-state='active'] {
+  stroke-dasharray: none;
+  animation: none;
+}
+
+.svg[data-motion='reduced'] .node[data-state='active'] .ring {
+  animation: none;
+}
+
+.svg[data-motion='reduced'] .pulse {
+  animation: none;
+  opacity: 0.55;
+}
+
+.svg[data-motion='reduced'] .actionChip {
+  animation: none;
+}
+
+.overlay[data-reduced='true'] .badge,
+.overlay[data-reduced='true'] .burst {
+  animation: none;
+}
+
+.overlay[data-reduced='true'] .burst {
+  opacity: 0;
+}
